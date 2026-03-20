@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Laddo 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-glow: #ff4d79;
+            --text-light: #ffe6eb;
+            --bg-deep: #1a050a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #3a0b1a 0%, var(--bg-deep) 100%);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-light);
+        }
+
+        /* Cinematic Glowing Background Hearts (Bokeh Effect) */
+        .bg-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp linear infinite;
+            z-index: -1;
+            filter: blur(4px); 
+            opacity: 0.4;
+        }
+
+        .bg-heart.sharp {
+            filter: blur(0px);
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            30% { opacity: 0.6; }
+            70% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Balloon Container */
+        #balloon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        .balloon {
+            width: 120px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff6b95, #cc0033);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            position: relative;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.3), 0 0 30px rgba(204, 0, 51, 0.6);
+            animation: floatBalloon 2s ease-in-out infinite alternate;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .balloon:hover {
+            transform: scale(1.1);
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.3), 0 0 50px rgba(255, 107, 149, 0.8);
+        }
+
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 18px solid #cc0033;
+        }
+
+        .string {
+            width: 2px;
+            height: 80px;
+            background: rgba(255,255,255,0.3);
+            margin-top: 10px;
+            animation: floatBalloon 2s ease-in-out infinite alternate;
+        }
+
+        .tap-text {
+            margin-top: 25px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2rem;
+            color: #ffb3c6;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 77, 121, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes floatBalloon {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        /* Premium Glassmorphism Message Box */
+        #message-container {
+            display: none;
+            max-width: 700px;
+            padding: 50px;
+            background: rgba(20, 5, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 149, 0.2);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 107, 149, 0.05);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            margin: 20px;
+            position: relative;
+        }
+
+        /* Ensure text stays above the roaming emojis */
+        #message-container > *:not(#inner-roaming-emojis) {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Container for roaming emojis behind the text */
+        #inner-roaming-emojis {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /* The roaming emojis themselves */
+        .inner-emoji {
+            position: absolute;
+            animation: roamInner infinite alternate ease-in-out;
+        }
+
+        @keyframes roamInner {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(var(--x), var(--y)) rotate(20deg) scale(1.2); }
+        }
+
+        /* Glowing Accent Line Top */
+        #message-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            box-shadow: 0 0 15px var(--primary-glow);
+            z-index: 2;
+        }
+
+        .show-message {
+            display: block !important;
+            animation: cinematicReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes cinematicReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .highlight-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 3rem;
+            background: linear-gradient(to right, #ffb3c6, #ff4d79);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px rgba(255, 77, 121, 0.3);
+        }
+
+        .paragraph {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #ffd6e0;
+            text-align: left;
+            margin-bottom: 25px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .elegant-divider {
+            width: 50px;
+            height: 3px;
+            background: #ff4d79;
+            margin: 40px auto;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #ff4d79;
+        }
+
+        .special-note {
+            font-size: 1.15rem;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.9;
+            color: #ffb3c6;
+            padding: 20px;
+            background: rgba(255, 77, 121, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 77, 121, 0.1);
+        }
+
+        .final-affirmation {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #ff4d79;
+            text-align: center;
+            font-weight: 700;
+            margin-top: 35px;
+            text-shadow: 0 0 15px rgba(255, 77, 121, 0.4);
+            line-height: 1.3;
+        }
+
+        .burst-heart {
+            position: absolute;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 100;
+            filter: drop-shadow(0 0 10px rgba(255,77,121,0.8));
+        }
+
+        @media (max-width: 600px) {
+            #message-container { padding: 30px 20px; }
+            .highlight-text { font-size: 2.2rem; }
+            .final-affirmation { font-size: 2.2rem; }
+            .paragraph { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-hearts"></div>
+
+    <div id="balloon-container" onclick="popBalloon()">
+        <div class="balloon"></div>
+        <div class="string"></div>
+        <div class="tap-text">Pop me, Kakku...</div>
+    </div>
+
+    <div id="message-container">
+        
+        <div id="inner-roaming-emojis"></div>
+        
+        <div class="highlight-text">For My Beautiful World</div>
+        <div class="paragraph">
+            Kakkku i know last night bad si and we both don’t like idda sad sad hona and even sadly and off mood ch sona jaaan and you mean an entire world to me and kal raat i felt ki my world is sad and my everything is off and low , kakku oh sari gallla chhodo mere putt your gagani loves you soo much from the bottom of my heart mer molle.<br><br>
+            
+            I know sometimes ( in-fact mostly ) i overthink and make the situation worse and i am sorry for that and haan don’t feel bad ki i am saying sorry ladddo because i should be sorry mere bachee this is how a bestest and healthy relationship works kii i felt ki main negative krta hu to i will be sorry for that kakkku , i want ki mera world , my everything that is youuu to be happy and have a big smile on your beautiful face laddo….<br><br>
+            
+            You can see it as apology frim your buggu because kahi na kahi i feel ki meri glti hai main overthinking me aake zada krdeta hu or you cal also see it as a message from your buggu to make things better and everything acha acha just like before to make everything fine and all good…putt i loveee you sooo much and i will forever lovee you till the end of my life i am just yours…jaaan our bond , our lovee is way tooo special…ye silly negative baate can do nothing to us jaaan….<br><br>
+            
+            And haan i know ye faltu baate unintentionally hojati hai jaaan and i understand you mere bache i understand your side meri molle i know ye sab faltu cheeze unintentionally hojati hai mere putt i understand mere shone bache i am your hubby meri molle your partner i assure you ki i understand you meri molle kabhi meri overthinking ki wajah se aise na sochna ki main smjh ni rha mere putt…<br><br>
+            
+            Mere bache i know maine raat ko kafi faltu bhi react kiya like wo number wali baat and haan wo anxity to thodi si hui thi bas thodi der liye hand se shake ho rhe the and baad ch chest heavy lg rhi thi to chest pe maine punch sa kiya ki thoda thik sa hojaye but fir halka sa pain hone lga tha wo apka bugggu dumbo hai na pta ni socha ki punch sa krke chest thik si hogi but pain hone lga tha but haan wo bas halka halka sa tha and haaan ye anxiety wali feeling bas bilkul thodi der liye thi achaa chhodo ye baat.<br><br>
+            
+            i understand and i know ki apko bhi bohot bura feel ho rha tha us moment pe and acha ni lg rha tha i understand your side sorry mere putt main kal zada hi negative hogya tha mere shone main itna negative ni socha kruga mere bache i mean dekhoo ab apke bugggi ki overthinking to apko jhelni pdegi😂🤭😁🥰❤️😘💖💗🧿but haan on serious note itna bhi negative hona sahi ni main zada hojata hu achaa chhodo ye faltu baate hai😁🧿💗💖🥰❤️😘<br><br>
+
+            Main bol rha tha ki haan i know maine raat faltu baate ki jis se obvious hai apko hurt hua bura lga and seriously uske liye main kuch bhi punishment leluga i apologise for that putt bas mera bacha man ch koi baat leke sad na feel kre bas mera bacha khush rhe 🥺🥺😁🧿💖❤️🥰✨💗🐣 mere cuutie se putt mood acha krege hum and sab happy happy rkhege😁😚❤️💖🫂🧿😘🥰💗
+        </div>
+        
+        <div class="elegant-divider"></div>
+
+        <div class="special-note">
+            Laddo your buggu lovessssss youuuu sooooo sooooo much mere shone putt 🥺😁💗🥰😘🧿❤️💖🫂<br><br>
+            Mere shona kakka sad hota hai to aisa lgta hai ki mera sab kuch off hai 💗🥺😁🥰🫂❤️🧿😘💖
+        </div>
+        
+        <div class="final-affirmation">
+            Now let’s make everything happy happy and achaa achaa haana mere shone se noneee kakkee 💗🥺😁🥰💖😘❤️🫂🧿
+        </div>
+    </div>
+
+    <script>
+        const heartsArr = ['💖', '❤️', '💗', '✨', '💫'];
+        const bgContainer = document.getElementById('bg-hearts');
+        
+        // 1. Full screen background hearts
+        for(let i = 0; i < 45; i++) {
+            let heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            if(Math.random() > 0.6) heart.classList.add('sharp');
+            
+            heart.innerText = heartsArr[Math.floor(Math.random() * heartsArr.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 15 + 8) + 's';
+            heart.style.animationDelay = (Math.random() * 5) + 's';
+            
+            let size = Math.random() * 20 + 10;
+            if(heart.classList.contains('sharp')) size += 10;
+            heart.style.fontSize = size + 'px';
+            
+            bgContainer.appendChild(heart);
+        }
+
+        // 2. NEW: Function to create roaming emojis behind the paragraph
+        function createInnerRoamingEmojis() {
+            const innerContainer = document.getElementById('inner-roaming-emojis');
+            
+            for(let i = 0; i < 25; i++) {
+                let emoji = document.createElement('div');
+                emoji.classList.add('inner-emoji');
+                emoji.innerText = heartsArr[Math.floor(Math.random() * heartsArr.length)];
+
+                // Random starting position inside the box
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.top = Math.random() * 100 + '%';
+
+                // Random movement distances
+                let xMove = (Math.random() * 100 - 50) + 'px'; // Move left or right up to 50px
+                let yMove = (Math.random() * 100 - 50) + 'px'; // Move up or down up to 50px
+
+                emoji.style.setProperty('--x', xMove);
+                emoji.style.setProperty('--y', yMove);
+
+                // Random speed and delay
+                emoji.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                emoji.style.animationDelay = (Math.random() * 5) + 's';
+
+                // Appearance: sizes, opacity, and blur!
+                emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                emoji.style.opacity = Math.random() * 0.25 + 0.1;
+                emoji.style.filter = `blur(${Math.random() * 3 + 2}px)`; // Beautiful out of focus look
+
+                innerContainer.appendChild(emoji);
+            }
+        }
+
+        function popBalloon() {
+            document.getElementById('balloon-container').style.display = 'none';
+            createBurst();
+            setTimeout(() => {
+                const msg = document.getElementById('message-container');
+                msg.classList.add('show-message');
+                // Trigger the roaming emojis once the box opens
+                createInnerRoamingEmojis();
+            }, 400);
+        }
+
+        function createBurst() {
+            for (let i = 0; i < 60; i++) {
+                let burst = document.createElement('div');
+                burst.classList.add('burst-heart');
+                burst.innerText = heartsArr[Math.floor(Math.random() * heartsArr.length)];
+                document.body.appendChild(burst);
+
+                burst.style.left = '50%';
+                burst.style.top = '50%';
+                burst.style.transform = 'translate(-50%, -50%)';
+
+                let angle = Math.random() * Math.PI * 2;
+                let velocity = 150 + Math.random() * 200;
+                let tx = Math.cos(angle) * velocity;
+                let ty = Math.sin(angle) * velocity;
+
+                burst.animate([
+                    { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(2)`, opacity: 0 }
+                ], {
+                    duration: 1200 + Math.random() * 600,
+                    easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)'
+                });
+
+                setTimeout(() => burst.remove(), 1800);
+            }
+        }
+    </script>
+</body>
+</html>
